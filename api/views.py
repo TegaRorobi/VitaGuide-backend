@@ -1,5 +1,6 @@
 
 from rest_framework import viewsets
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .serializers import *
 
@@ -14,3 +15,7 @@ class UsersViewSet(viewsets.ModelViewSet):
 
     queryset = UserModel.objects.order_by('-id')
     serializer_class = UserSerializer
+
+
+class LoginView(TokenObtainPairView):
+    serializer_class = LoginSerializer
