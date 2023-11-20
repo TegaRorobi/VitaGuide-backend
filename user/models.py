@@ -33,4 +33,4 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} ({self.email})"
+        return f"{self.first_name or ''} {self.last_name or ''} ({self.email})".strip()
