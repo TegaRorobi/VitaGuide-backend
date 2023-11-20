@@ -1,7 +1,10 @@
 
 from rest_framework import serializers
 
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import (
+    TokenObtainPairSerializer,
+    TokenRefreshSerializer,
+)
 
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import get_user_model
@@ -9,6 +12,7 @@ UserModel = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = UserModel
         fields = '__all__'
@@ -31,3 +35,7 @@ class LoginSerializer(TokenObtainPairSerializer):
                 'last_name': self.user.last_name,
             }
         }
+
+
+class LoginRefreshSerializer(TokenRefreshSerializer):
+    pass

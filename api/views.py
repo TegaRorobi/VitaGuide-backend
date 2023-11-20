@@ -1,6 +1,9 @@
 
 from rest_framework import viewsets
-from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView
+)
 
 from .serializers import *
 
@@ -19,3 +22,6 @@ class UsersViewSet(viewsets.ModelViewSet):
 
 class LoginView(TokenObtainPairView):
     serializer_class = LoginSerializer
+
+class LoginRefreshView(TokenRefreshView):
+    serializer_class = LoginRefreshSerializer
