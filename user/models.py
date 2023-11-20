@@ -24,6 +24,8 @@ class User(AbstractUser):
     first_name = models.CharField(_("first name"), max_length=150)
     last_name = models.CharField(_("last name"), max_length=150, null=True, blank=True)
 
+    chat_logs = models.JSONField(_("chat logs"), null=True, blank=True)
+
 
     objects = UserManager()
 
