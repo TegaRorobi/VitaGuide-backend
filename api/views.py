@@ -2,7 +2,8 @@
 from rest_framework import viewsets
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
-    TokenRefreshView
+    TokenRefreshView,
+    TokenBlacklistView
 )
 
 from .serializers import *
@@ -25,3 +26,6 @@ class LoginView(TokenObtainPairView):
 
 class LoginRefreshView(TokenRefreshView):
     serializer_class = LoginRefreshSerializer
+
+class LogoutView(TokenBlacklistView):
+    serializer_class = LogoutSerializer

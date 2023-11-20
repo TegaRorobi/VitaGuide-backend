@@ -4,6 +4,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import (
     TokenObtainPairSerializer,
     TokenRefreshSerializer,
+    TokenBlacklistSerializer
 )
 
 from django.contrib.auth.hashers import make_password
@@ -38,4 +39,8 @@ class LoginSerializer(TokenObtainPairSerializer):
 
 
 class LoginRefreshSerializer(TokenRefreshSerializer):
+    pass
+
+
+class LogoutSerializer(TokenBlacklistSerializer):
     pass

@@ -11,4 +11,5 @@ urlpatterns = [
 
     re_path('^auth/login/?$', LoginView.as_view(), name='api-login'),
     re_path('^auth/login/refresh/?$', LoginRefreshView.as_view(), name='api-login-refresh'),
+    re_path('^auth/logout/?$', LogoutView.as_view(), name='api-logout'),
 ]
