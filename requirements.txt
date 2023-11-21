@@ -1,5 +1,7 @@
 Django
 djangorestframework
 djangorestframework_simplejwt
+django-cors-headers
 python-decouple
+whitenoise
 drf_yasg
