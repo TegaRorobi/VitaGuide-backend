@@ -1,3 +1,5 @@
 Django
 djangorestframework
 djangorestframework_simplejwt
+python-decouple
+drf_yasg
