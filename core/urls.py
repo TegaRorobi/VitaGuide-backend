@@ -30,11 +30,10 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     #admin
-    path('admin/', admin.site.urls),
+    re_path(f'^{settings.ADMIN_URL.strip()}/', admin.site.urls),
 
     # urlconfs
     path('api/', include('api.urls')),
-
 
     # swagger/redoc
     re_path('^api/swagger(?P<format>\.json|\.yaml)', schema_view.without_ui(), name='schema-json'),

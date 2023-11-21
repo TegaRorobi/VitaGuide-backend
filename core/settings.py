@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,13 +22,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-j5(0#^fvr44$al$&x%+ipcjmg7c1q)s(^v8#=d9vlohf_0(eir'
+SECRET_KEY = config('SECRET_KEY', cast=str)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool, default=True)
 
-ALLOWED_HOSTS = []
+split_env_str = lambda v: [s.strip() for s in v.split(',')]
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=split_env_str)
 
+ADMIN_URL = config('ADMIN_URL', cast=str, default='admin')
 
 # Application definition
 
