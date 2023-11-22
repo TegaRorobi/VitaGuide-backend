@@ -47,5 +47,4 @@ class LogoutSerializer(TokenBlacklistSerializer):
 
 
 class ChatMessageSerializer(serializers.Serializer):
-    
     question = serializers.CharField()
