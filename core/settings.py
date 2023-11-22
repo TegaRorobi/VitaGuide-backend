@@ -33,6 +33,8 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=split_env_str)
 
 ADMIN_URL = config('ADMIN_URL', cast=str, default='admin')
 
+OPENAI_API_KEY = config('OPENAI_API_KEY', cast=str)
+
 # Application definition
 
 INSTALLED_APPS = [
