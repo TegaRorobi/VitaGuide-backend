@@ -5,3 +5,4 @@ django-cors-headers
 python-decouple
 whitenoise
 drf_yasg
+openai
