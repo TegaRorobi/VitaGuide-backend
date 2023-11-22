@@ -22,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
         clear_password = validated_data['password']
         validated_data['password'] = make_password(clear_password)
         validated_data.setdefault('is_active', True)
-        return validated_data
+        return super().create(validated_data)
 
 
 class LoginSerializer(TokenObtainPairSerializer):
@@ -44,3 +44,8 @@ class LoginRefreshSerializer(TokenRefreshSerializer):
 
 class LogoutSerializer(TokenBlacklistSerializer):
     pass
+
+
+class ChatMessageSerializer(serializers.Serializer):
+    
+    question = serializers.CharField()
