@@ -6,7 +6,7 @@ from rest_framework_simplejwt.serializers import (
     TokenRefreshSerializer,
     TokenBlacklistSerializer
 )
-
+from .models import ChatLog
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import get_user_model
 UserModel = get_user_model()
@@ -23,6 +23,13 @@ class UserSerializer(serializers.ModelSerializer):
         validated_data['password'] = make_password(clear_password)
         validated_data.setdefault('is_active', True)
         return super().create(validated_data)
+
+
+class ChatLogSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ChatLog
+        fields = '__all__'
 
 
 class LoginSerializer(TokenObtainPairSerializer):
