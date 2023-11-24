@@ -18,4 +18,6 @@ urlpatterns = [
     re_path('^user/(?P<pk>\d+)/delete/?$', UsersViewSet.as_view(DESTROY), name='user-delete'),
     re_path('^user/(?P<pk>\d+)/chat/?$', ChatView.as_view(), name='user-chat'),
 
+    re_path('^chat/(?P<pk>\d+)/retrieve/?$', ChatLogViewSet.as_view(RETRIEVE), name='chat-retrieve'),
+
 ]

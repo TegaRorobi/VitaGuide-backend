@@ -48,27 +48,34 @@ class ChatView(GenericAPIView):
 
     model = 'gpt-3.5-turbo'
     endpoint = 'https://api.openai.com/v1/chat/completions'
-    headers = {'Authorization': f'Bearer {settings.OPENAI_API_KEY}'}
+    request_headers = {'Authorization': f'Bearer {settings.OPENAI_API_KEY}'}
 
     queryset = UserModel.objects.order_by('-id')
     serializer_class = ChatMessageSerializer
 
     def get_completion(self, messages):
         data = dict(model=self.model, messages=messages)
-        res = requests.post(url=self.endpoint, headers=self.headers, json=data)
+        res = requests.post(url=self.endpoint, headers=self.request_headers, json=data)
+        completion = None
         if hasattr(res, 'json'):
-            print(res.json())
-            return res['choices'][0]['message']
-        print(res)
+            if res.status_code==200:
+                completion =  res.json()['choices'][0]['message']
+            else:
+                completion = res.json()
+        return res.status_code, completion
     
 
     def post(self, request, *args, **kwargs):
-        user = self.get_object()
+        chat_log = self.get_object().chat_log
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            messages = user.chat_log['messages']
+            messages = chat_log.content['messages']
             messages.append({'role':'user', 'content':serializer.validated_data['question']})
-            messages.append(self.get_completion(messages))
-            user.save()
+            status_code, completion = self.get_completion(messages)
+            if status_code != 200:
+                return Response(completion or {'error':'Error processing request'}, status=status_code)
+            messages.append(completion)
+            chat_log.content['messages'] = messages
+            chat_log.save()
             return Response(dict(response=messages[-1]['content']), status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -41,8 +41,8 @@ class User(AbstractUser):
 
     def save(self, *args, **kwargs) -> None:
         if not self.chat_log:
-            f = open((settings.BASE_DIR/'user/context.txt'), 'r')
-            self.chat_log = ChatLog.objects.create(content={'messages': [{'role': 'system','content': f.read()}]})
+            cnt = open((settings.BASE_DIR/'user/context.txt'), 'r').read().format(self.first_name, self.last_name)
+            self.chat_log = ChatLog.objects.create(content={'messages': [{'role': 'system','content': cnt}]})
         return super().save(*args, **kwargs)
     
     def __str__(self):
