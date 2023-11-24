@@ -10,6 +10,7 @@ from rest_framework_simplejwt.views import (
 )
 from django.conf import settings
 from .serializers import *
+from .models import *
 import requests
 from django.contrib.auth import get_user_model
 UserModel = get_user_model()
@@ -23,6 +24,12 @@ class UsersViewSet(ModelViewSet):
 
     queryset = UserModel.objects.order_by('-id')
     serializer_class = UserSerializer
+
+
+class ChatLogViewSet(ModelViewSet):
+
+    queryset = ChatLog.objects.all()
+    serializer_class = ChatLogSerializer
 
 
 class LoginView(TokenObtainPairView):
