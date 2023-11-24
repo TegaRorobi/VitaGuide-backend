@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.conf import settings
 from .manager import UserManager
+from api.models import ChatLog
 
 
 
@@ -27,15 +28,11 @@ class User(AbstractUser):
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
     last_login = models.DateTimeField(_('last login'), auto_now=True)
 
-    chat_logs = models.JSONField(_("chat logs"), null=True, blank=True)
+    chat_log = models.OneToOneField(ChatLog, related_name='user', on_delete=models.SET_NULL, null=True)
 
     groups = None
-    is_staff = None 
-    is_active = None 
-    is_superuser = None
     user_permissions = None
     
-
 
     objects = UserManager()
 
@@ -43,13 +40,9 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
     def save(self, *args, **kwargs) -> None:
-        if not self.chat_logs:
-            self.chat_logs = {
-                'messages': [{
-                    'role': 'system',
-                    'content': open((settings.BASE_DIR/'user/context.txt'), 'r').read()
-                }]
-            }
+        if not self.chat_log:
+            f = open((settings.BASE_DIR/'user/context.txt'), 'r')
+            self.chat_log = ChatLog.objects.create(content={'messages': [{'role': 'system','content': f.read()}]})
         return super().save(*args, **kwargs)
     
     def __str__(self):

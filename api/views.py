@@ -59,7 +59,7 @@ class ChatView(GenericAPIView):
         user = self.get_object()
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            messages = user.chat_logs['messages']
+            messages = user.chat_log['messages']
             messages.append({'role':'user', 'content':serializer.validated_data['question']})
             messages.append(self.get_completion(messages))
             user.save()
