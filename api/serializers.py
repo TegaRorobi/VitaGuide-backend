@@ -14,6 +14,7 @@ UserModel = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
 
+    chat_sessions = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     class Meta:
         model = UserModel
         fields = '__all__'
@@ -37,6 +38,9 @@ class ChatSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatSession
         fields = '__all__'
+        extra_kwargs = {
+            'user': {'read_only':True}
+        }
 
     def to_representation(self, instance):
         ret =  super().to_representation(instance)
