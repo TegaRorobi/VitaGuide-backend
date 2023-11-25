@@ -22,14 +22,15 @@ class User(AbstractUser):
         null=True, blank=True
     )
     email = models.EmailField(_("email address"), unique=True)
-    first_name = models.CharField(_("first name"), max_length=150)
-    last_name = models.CharField(_("last name"), max_length=150, null=True, blank=True)
+    full_name = models.CharField(_("full name"), max_length=300)
 
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
     last_login = models.DateTimeField(_('last login'), auto_now=True)
 
     chat_log = models.OneToOneField(ChatLog, related_name='user', on_delete=models.SET_NULL, null=True)
 
+    first_name = None 
+    last_name = None
     groups = None
     user_permissions = None
     
