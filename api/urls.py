@@ -18,6 +18,10 @@ urlpatterns = [
     re_path('^user/(?P<pk>\d+)/update/?$', UsersViewSet.as_view(UPDATE_ANY), name='user-update'),
     re_path('^user/(?P<pk>\d+)/delete/?$', UsersViewSet.as_view(DESTROY), name='user-delete'),
 
+    re_path('^chat/sessions/create/?$', ChatSessionViewSet.as_view(CREATE), name='chat-session-create'),
+    re_path('^chat/sessions/(?P<pk>\d+)/retrieve/?$', ChatSessionViewSet.as_view(RETRIEVE), name='chat-session-retrieve'),
+
+
     re_path('^chat/user/(?P<pk>\d+)/?$', ChatViewSet.as_view({'post':'respond_to_user'}), name='user-chat'),
     re_path('^chat/(?P<pk>\d+)/retrieve/?$', ChatViewSet.as_view({'get':'retrieve_chat_log'}), name='chat-retrieve'),
 

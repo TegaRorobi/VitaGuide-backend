@@ -1,9 +1,8 @@
 
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
-from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework import status
+from rest_framework import status, mixins, permissions
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -37,6 +36,18 @@ class LoginRefreshView(TokenRefreshView):
 
 class LogoutView(TokenBlacklistView):
     serializer_class = LogoutSerializer
+
+
+class ChatSessionViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
+
+    "API Viewset to create and retrieve chat sessions for the currently authenticated user"
+
+    queryset = ChatSession.objects.prefetch_related('user')
+    serializer_class = ChatSessionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class ChatViewSet(GenericViewSet):
