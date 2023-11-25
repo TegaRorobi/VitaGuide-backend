@@ -39,7 +39,8 @@ class ChatSessionSerializer(serializers.ModelSerializer):
         model = ChatSession
         fields = '__all__'
         extra_kwargs = {
-            'user': {'read_only':True}
+            'user': {'read_only':True},
+            'content': {'read_only':True}
         }
 
     def to_representation(self, instance):

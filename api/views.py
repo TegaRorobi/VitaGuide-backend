@@ -47,7 +47,7 @@ class LogoutView(TokenBlacklistView):
 class ChatSessionViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
 
     "API Viewset to list out, create and retrieve the chat sessions belonging to the currently authenticated user"
-    
+
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
@@ -68,9 +68,6 @@ class ChatSessionViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.
     request_headers = {'Authorization': f'Bearer {settings.OPENAI_API_KEY}'}
     
     
-    serializer_class = ChatMessageSerializer
-
-
     def get_completion(self, messages):
         data = dict(model=self.model, messages=messages)
         res = requests.post(url=self.endpoint, headers=self.request_headers, json=data)
