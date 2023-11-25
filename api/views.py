@@ -1,7 +1,8 @@
 
-from rest_framework.viewsets import ModelViewSet 
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from rest_framework import status
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -26,12 +27,6 @@ class UsersViewSet(ModelViewSet):
     serializer_class = UserSerializer
 
 
-class ChatLogViewSet(ModelViewSet):
-
-    queryset = ChatLog.objects.all()
-    serializer_class = ChatLogSerializer
-
-
 class LoginView(TokenObtainPairView):
     serializer_class = LoginSerializer
 
@@ -44,14 +39,31 @@ class LogoutView(TokenBlacklistView):
     serializer_class = LogoutSerializer
 
 
-class ChatView(GenericAPIView):
+class ChatViewSet(GenericViewSet):
 
     model = 'gpt-3.5-turbo'
     endpoint = 'https://api.openai.com/v1/chat/completions'
     request_headers = {'Authorization': f'Bearer {settings.OPENAI_API_KEY}'}
 
-    queryset = UserModel.objects.order_by('-id')
-    serializer_class = ChatMessageSerializer
+    def get_queryset(self):
+        if self.action=='respond_to_user':
+            return UserModel.objects.order_by('-id')
+        return ChatLog.objects.all()
+    
+    def get_serializer_class(self):
+        if self.action=='respond_to_user':
+            return ChatMessageSerializer
+        return ChatLogSerializer
+
+
+    @action(detail=True)
+    def retrieve_chat_log(self, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        a = serializer.data['content']['messages']
+        serializer.data['content']['messages'] = a[1:]
+        return Response(serializer.data)
+
 
     def get_completion(self, messages):
         data = dict(model=self.model, messages=messages)
@@ -63,9 +75,9 @@ class ChatView(GenericAPIView):
             else:
                 completion = res.json()
         return res.status_code, completion
-    
 
-    def post(self, request, *args, **kwargs):
+    @action(detail=True)
+    def respond_to_user(self, request, *args, **kwargs):
         chat_log = self.get_object().chat_log
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
