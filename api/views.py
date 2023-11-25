@@ -25,6 +25,12 @@ class UsersViewSet(ModelViewSet):
     queryset = UserModel.objects.order_by('-id')
     serializer_class = UserSerializer
 
+    @action(detail=True)
+    def my_details(self, request, *args, **kwargs):
+        ins = self.request.user 
+        serializer = self.get_serializer(ins)
+        return Response(serializer.data)
+
 
 class LoginView(TokenObtainPairView):
     serializer_class = LoginSerializer

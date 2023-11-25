@@ -14,6 +14,7 @@ urlpatterns = [
     re_path('^users/list/?$', UsersViewSet.as_view(LIST), name='users-list'),
     re_path('^users/create/?$', UsersViewSet.as_view(CREATE), name='user-create'),
 
+    re_path('^user/me/retrieve/?$', UsersViewSet.as_view({'get':'my_details'}), name='user-retrieve'),
     re_path('^user/(?P<pk>\d+)/retrieve/?$', UsersViewSet.as_view(RETRIEVE), name='user-retrieve'),
     re_path('^user/(?P<pk>\d+)/update/?$', UsersViewSet.as_view(UPDATE_ANY), name='user-update'),
     re_path('^user/(?P<pk>\d+)/delete/?$', UsersViewSet.as_view(DESTROY), name='user-delete'),
