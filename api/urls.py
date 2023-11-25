@@ -19,6 +19,7 @@ urlpatterns = [
     re_path('^user/(?P<pk>\d+)/update/?$', UsersViewSet.as_view(UPDATE_ANY), name='user-update'),
     re_path('^user/(?P<pk>\d+)/delete/?$', UsersViewSet.as_view(DESTROY), name='user-delete'),
 
+    re_path('^chat/sessions/all/?$', ChatSessionViewSet.as_view(LIST), name='chat-sessions-list'),
     re_path('^chat/sessions/create/?$', ChatSessionViewSet.as_view(CREATE), name='chat-session-create'),
     re_path('^chat/sessions/(?P<pk>\d+)/retrieve/?$', ChatSessionViewSet.as_view(RETRIEVE), name='chat-session-retrieve'),
 

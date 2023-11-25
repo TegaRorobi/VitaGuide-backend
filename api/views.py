@@ -44,11 +44,12 @@ class LogoutView(TokenBlacklistView):
     serializer_class = LogoutSerializer
 
 
-class ChatSessionViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
+class ChatSessionViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
 
     "API Viewset to create and retrieve chat sessions for the currently authenticated user"
 
-    queryset = ChatSession.objects.prefetch_related('user')
+    def get_queryset(self):
+        return ChatSession.objects.filter(user=self.request.user).prefetch_related('user')
     serializer_class = ChatSessionSerializer
     permission_classes = [permissions.IsAuthenticated]
 
