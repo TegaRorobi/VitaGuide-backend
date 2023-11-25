@@ -47,4 +47,4 @@ class User(AbstractUser):
         return super().save(*args, **kwargs)
     
     def __str__(self):
-        return f"{self.first_name or ''} {self.last_name or ''} ({self.email})".strip()
+        return f"{self.full_name} ({self.email})".strip()

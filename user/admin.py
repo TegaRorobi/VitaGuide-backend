@@ -6,5 +6,5 @@ UserModel = get_user_model()
 @admin.register(UserModel)
 class UserAdmin(admin.ModelAdmin):
     model = UserModel
-    list_display = 'first_name', 'last_name', 'email', 'username', 'is_superuser'
-    list_display_links = 'first_name', 'email'
+    list_display = 'full_name', 'email', 'username', 'is_superuser'
+    list_display_links = 'full_name', 'email'
