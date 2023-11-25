@@ -60,8 +60,6 @@ class ChatViewSet(GenericViewSet):
     def retrieve_chat_log(self, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-        a = serializer.data['content']['messages']
-        serializer.data['content']['messages'] = a[1:]
         return Response(serializer.data)
 
 

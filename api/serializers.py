@@ -37,10 +37,12 @@ class ChatSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatSession
         fields = '__all__'
-    
-    def validate(self, attrs):
-        print(attrs)
-        return super().validate(attrs)
+
+    def to_representation(self, instance):
+        ret =  super().to_representation(instance)
+        a = ret['content']['messages']
+        ret['content']['messages'] = a[1:]
+        return ret
 
 
 class LoginSerializer(TokenObtainPairSerializer):
