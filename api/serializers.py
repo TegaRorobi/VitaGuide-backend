@@ -17,6 +17,13 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields = '__all__'
+        extra_kwargs = {
+            'is_active': {'read_only':True},
+            'is_staff': {'read_only':True},
+            'date_joined': {'read_only':True},
+            'is_superuser': {'read_only':True},
+            'chat_log': {'read_only':True},
+        }
 
     def create(self, validated_data):
         clear_password = validated_data['password']
