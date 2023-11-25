@@ -3,8 +3,10 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 UserModel = get_user_model()
 
+
 class ChatSession(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='chat_sessions')
+    title = models.CharField(_("session title"), max_length=300, null=True, default="New Session")
     content = models.JSONField(_("log content"), null=True, blank=True)
 
     created_at = models.DateTimeField(_('date created'), auto_now_add=True)
