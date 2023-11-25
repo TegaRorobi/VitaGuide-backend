@@ -48,12 +48,12 @@ class ChatViewSet(GenericViewSet):
     def get_queryset(self):
         if self.action=='respond_to_user':
             return UserModel.objects.order_by('-id')
-        return ChatLog.objects.all()
+        return ChatSession.objects.all()
     
     def get_serializer_class(self):
         if self.action=='respond_to_user':
             return ChatMessageSerializer
-        return ChatLogSerializer
+        return ChatSessionSerializer
 
 
     @action(detail=True)
