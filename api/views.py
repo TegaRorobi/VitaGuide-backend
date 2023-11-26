@@ -135,7 +135,30 @@ class ChatSessionViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.
             return ChatMessageSerializer
         return ChatSessionSerializer
     
+    @swagger_auto_schema(
+        operation_summary="Get all of the currently authenticated user's chat sessions",
+        operation_description="This endpoint returns a paginated response of all the chat sessions engaged by "
+        "the currently authenticated user."
+    )
+    def list(self, *args, **kwargs):
+        return super().list(*args, **kwargs)
+    
+    @swagger_auto_schema(
+        operation_summary="Retrieve the details of one of the currently authenticated user's chat sessions",
+        operation_description="This endpoint accepts the id of one of the currently authenticated user's chat "
+        "sessions, retrieves this session and then returns it."
+    )
+    def retrieve(self, *args, **kwargs):
+        return super().retrieve(*args, **kwargs)
 
+    @swagger_auto_schema(
+        operation_summary="Create a new chat session for the currently authenticated user",
+        operation_description="This endpoint accepts an optional argument, 'title' (which defaults to 'New Session'), "
+        "creates a new chat session for the currently authenticated user, and returns its details."
+    )
+    def create(self, *args, **kwargs):
+        return super().create(*args, **kwargs)
+    
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
@@ -156,7 +179,13 @@ class ChatSessionViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.
                 completion = res.json()
         return res.status_code, completion
 
+    
     @action(detail=True)
+    @swagger_auto_schema(
+        operation_summary="Enter a question and get a context-considered response from the chatbot",
+        operation_description="This endpoint accepts the id of one of the currently authenticated user's chat sessions, "
+        "and returns a response, taking into consideration all of the existing context from the session."
+    )
     def respond_to_user(self, request, *args, **kwargs):
         session = self.get_object()
         serializer = self.get_serializer(data=request.data)
