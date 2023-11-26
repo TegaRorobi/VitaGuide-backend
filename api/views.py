@@ -24,12 +24,14 @@ class UsersViewSet(ModelViewSet):
 
     queryset = UserModel.objects.order_by('-id')
     serializer_class = UserSerializer
+    def get_permissions(self):
+        if self.action in ('create', 'list'):
+            return [permissions.AllowAny()]
+        return  [permissions.IsAuthenticated()]
 
-    @action(detail=True)
-    def my_details(self, request, *args, **kwargs):
-        ins = self.request.user 
-        serializer = self.get_serializer(ins)
-        return Response(serializer.data)
+    def get_object(self):
+        return self.request.user
+
 
 
 class LoginView(TokenObtainPairView):

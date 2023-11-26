@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-from django.conf import settings
+from django.contrib.auth.hashers import make_password
 from .manager import UserManager
 
 
@@ -31,6 +31,10 @@ class User(AbstractUser):
     groups = None
     user_permissions = None
     
+    def save(self, *args, **kwargs):
+        if not self.password.startswith('pbkdf2_sha256'):
+            self.password = make_password(self.password)
+        return super().save(*args, **kwargs)
 
     objects = UserManager()
 

@@ -22,7 +22,6 @@ class UserSerializer(serializers.ModelSerializer):
             'is_active': {'read_only':True},
             'is_staff': {'read_only':True},
             'date_joined': {'read_only':True},
-            'is_superuser': {'read_only':True},
             'chat_log': {'read_only':True},
         }
 
@@ -30,7 +29,14 @@ class UserSerializer(serializers.ModelSerializer):
         clear_password = validated_data['password']
         validated_data['password'] = make_password(clear_password)
         validated_data.setdefault('is_active', True)
+        validated_data.setdefault('is_superuser', False)
         return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        if 'password' in validated_data:
+            clear_password = validated_data['password']
+            validated_data['password'] = make_password(clear_password)
+        return super().update(instance, validated_data)
 
 
 class ChatSessionSerializer(serializers.ModelSerializer):
