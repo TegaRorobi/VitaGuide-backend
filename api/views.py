@@ -85,15 +85,40 @@ class UsersViewSet(ModelViewSet):
 
 
 class LoginView(TokenObtainPairView):
+
     serializer_class = LoginSerializer
+
+    @swagger_auto_schema(
+        operation_summary='Get a user\'s JWT refresh and access tokens.',
+        operation_description='Takes a set of user credentials (email and password) and returns '
+        'an access and refresh JSON web\ntoken pair to prove the authentication of those credentials.'
+    )
+    def post(self, *args, **kwargs):
+        return super().post(*args, **kwargs)
 
 
 class LoginRefreshView(TokenRefreshView):
+
     serializer_class = LoginRefreshSerializer
+
+    @swagger_auto_schema(
+        operation_summary='Refresh a user\'s JWT access token with a refresh token.',
+        operation_description='Takes a user\'s refresh token and generates a new access token from it and returns it.'
+    )
+    def post(self, *args, **kwargs):
+        return super().post(*args, **kwargs)
 
 
 class LogoutView(TokenBlacklistView):
+
     serializer_class = LogoutSerializer
+
+    @swagger_auto_schema(
+        operation_summary='Invalidate a user\'s JWT refresh token',
+        operation_description='Takes a user\'s refresh token and blacklists it, thereby invalidating it as a form of logout.'
+    )
+    def post(self, *args, **kwargs):
+        return super().post(*args, **kwargs)
 
 
 class ChatSessionViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
