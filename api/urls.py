@@ -15,7 +15,7 @@ urlpatterns = [
     re_path('^users/create/?$', UsersViewSet.as_view(CREATE), name='user-create'),
 
     re_path('^user/me/retrieve/?$', UsersViewSet.as_view(RETRIEVE), name='user-retrieve'),
-    re_path('^user/me/update/?$', UsersViewSet.as_view(UPDATE_ANY), name='user-update'),
+    re_path('^user/me/update/?$', UsersViewSet.as_view(PARTIAL_UPDATE), name='user-update'),
     re_path('^user/me/delete/?$', UsersViewSet.as_view(DESTROY), name='user-delete'),
 
     re_path('^chat/sessions/all/?$', ChatSessionViewSet.as_view(LIST), name='chat-sessions-list'),
