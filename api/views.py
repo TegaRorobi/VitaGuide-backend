@@ -1,18 +1,20 @@
 
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework import status, mixins, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework import status, mixins, permissions
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenBlacklistView
 )
+from drf_yasg.utils import swagger_auto_schema
+from django.contrib.auth import get_user_model
 from django.conf import settings
 from .serializers import *
 from .models import *
 import requests
-from django.contrib.auth import get_user_model
+
 UserModel = get_user_model()
 
 
@@ -31,6 +33,54 @@ class UsersViewSet(ModelViewSet):
 
     def get_object(self):
         return self.request.user
+    
+
+    @swagger_auto_schema(
+        operation_summary='List out all users',
+        operation_description='This endpoint returns a paginated response of '
+        'all users stored in the database, with all necessary fields.'
+    )
+    def list(self, *args, **kwargs):
+        return super().list(*args, **kwargs)
+    
+
+    @swagger_auto_schema(
+        operation_summary='Create a new user',
+        operation_description='This endpoint accepts the common parameters of a user (full_name, email, password), '
+        'saves the user to the database and returns the created user.'
+    )
+    def create(self, *args, **kwargs):
+        return super().create(*args, **kwargs)
+    
+
+    @swagger_auto_schema(
+        operation_summary='Retrieve the details of the currently authenticated user',
+        operation_description='This endpoint doesn\'t accept any parameters, and simply '
+        'returns the details of the currently authenticated user'
+    )
+    def retrieve(self, *args, **kwargs):
+        return super().retrieve(*args, **kwargs)
+    
+    
+    @swagger_auto_schema(
+        operation_summary='Update some details of the currently authenticated user',
+        operation_description='This endpoint updates the currently authenticated user, with only'
+        'the fields sent in the request body.'
+    )
+    def partial_update(self, *args, **kwargs):
+        return super().partial_update(*args, **kwargs)
+    
+
+    @swagger_auto_schema(
+        operation_summary='Delete the currently authenticated user ⚠⚠',
+        operation_description='This endpoint deletes the currently authenticated user\'s account. '
+        'This is NOT REVERSIBLE.'
+    )
+    def destroy(self, *args, **kwargs):
+        return super().destroy(*args, **kwargs)
+
+    
+
 
 
 
