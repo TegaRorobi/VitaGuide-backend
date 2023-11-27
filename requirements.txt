@@ -3,6 +3,7 @@ djangorestframework
 djangorestframework_simplejwt
 django-cors-headers
 python-decouple
+setuptools
 whitenoise
 drf_yasg
 requests
