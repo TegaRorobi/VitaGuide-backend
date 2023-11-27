@@ -23,17 +23,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', cast=str)
+SECRET_KEY = config('SECRET_KEY', cast=str, default='***')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool, default=True)
 
 split_env_str = lambda v: [s.strip() for s in v.split(',')]
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=split_env_str)
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=split_env_str, default='*')
 
 ADMIN_URL = config('ADMIN_URL', cast=str, default='admin')
 
-OPENAI_API_KEY = config('OPENAI_API_KEY', cast=str)
+OPENAI_API_KEY = config('OPENAI_API_KEY', cast=str, default='***')
 
 # Application definition
 
@@ -144,15 +144,12 @@ SWAGGER_SETTINGS = {
     'LOGIN_URL': f'/{ADMIN_URL}/login',
     'LOGOUT_URL': f'/{ADMIN_URL}/logout',
     'SECURITY_DEFINITIONS': {
-      'Basic': {
-            'type': 'basic'
-      },
-      'Bearer': {
+        'Bearer': {
             'type': 'apiKey',
             'name': 'Authorization',
             'in': 'header'
-      }
-   }
+        }
+    }
 }
 
 # Internationalization
